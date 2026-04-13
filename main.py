@@ -115,7 +115,7 @@ async def classify_name(name: Optional[str] = Query(None)):
             status_code=200,
             detail={
                 "status": "error",
-                "message": "No prediction available for the given name"
+                "message": "No prediction available for the provided name"
             }
         )
     
