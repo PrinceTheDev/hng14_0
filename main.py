@@ -68,10 +68,10 @@ async def fetch_from_genderize(name: str) -> dict:
                 "message": "External API timeout"
             }
         )
-    except httpx.HTTPError as e:
+    except httpx.HTTPError:
         raise HTTPException(
             status_code=502,
-            details={
+            detail={
                 "status": "error",
                 "message": "External API error"
             }
@@ -85,7 +85,7 @@ def process_genderize_response(name: str, data: dict) -> Optional[dict]:
     probability = data.get("probability")
     count = data.get("count", 0)
 
-    if gender is None or count == 0:
+    if gender is None or count == 0 or probability is None:
         return None
     
     is_confident = (probability >= 0.7) and (count >= 100)
@@ -112,7 +112,7 @@ async def classify_name(name: Optional[str] = Query(None)):
 
     if processed_data is None:
         raise HTTPException(
-            status_code=200,
+            status_code=422,
             detail={
                 "status": "error",
                 "message": "No prediction available for the provided name"
