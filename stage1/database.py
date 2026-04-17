@@ -1,4 +1,5 @@
 from sqlmodel import SQLModel, create_engine, Session, Field, select
+from uuid import UUID
 from uuid6 import uuid7
 from datetime import datetime, timezone
 from typing import Optional
