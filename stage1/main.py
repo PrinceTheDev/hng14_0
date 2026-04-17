@@ -4,9 +4,9 @@ from typing import Optional
 import logging
 from contextlib import asynccontextmanager
 
-from database import create_db, get_profile_by_id, get_profile_by_name, get_all_profiles, delete_profile_by_id, create_profile
-from models import CreateProfileRequest
-from utils import fetch_external_apis, classify_profile
+from stage1.database import create_db, get_profile_by_id, get_profile_by_name, get_all_profiles, delete_profile_by_id, create_profile
+from stage1.models import CreateProfileRequest
+from stage1.utils import fetch_external_apis, classify_profile
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
