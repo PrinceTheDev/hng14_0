@@ -15,18 +15,17 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+app = FastAPI(
+    title="Intelligence Query Engine System",
+    version="1.0",
+)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_db()
     logger.info("Database created successfully")
     yield
     logger.info("Shutting down application")
-
-
-app = FastAPI(
-    title="Intelligence Query Engine System",
-    version="1.0",
-)
 
 app.add_middleware(
     CORSMiddleware,
