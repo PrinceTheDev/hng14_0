@@ -27,15 +27,16 @@ AGE_GROUP_MAP = {
     "children": "child",
     "kid": "child",
     "kids": "child",
-    "teen": "teen",
-    "teenager": "teen",
-    "teens": "teen",
+    "teen": "teenager",
+    "teenager": "teenager",
+    "teens": "teenager",
+    "adolescent": "teenager",
     "adult": "adult",
     "adults": "adult",
-    "elderly": "elderly",
-    "senior": "elderly",
-    "seniors": "elderly",
-    "old": "elderly",
+    "elderly": "senior",
+    "senior": "senior",
+    "seniors": "senior",
+    "old": "senior",
 }
 
 GENDER_MAP = {
@@ -51,20 +52,9 @@ GENDER_MAP = {
     "women": "female",
     "girl": "female",
     "girls": "female",
-    "lady": "female",
+    "lady": "lady",
     "ladies": "female",
 }
-
-
-def classify_age_group(age: int) -> Optional[str]:
-    if age < 13:
-        return "child"
-    elif age < 20:
-        return "teen"
-    elif age < 60:
-        return "adult"
-    else:
-        return "elderly"
     
 
 def parse_natural_language_query(query: str) -> Optional[Dict]:
@@ -78,11 +68,16 @@ def parse_natural_language_query(query: str) -> Optional[Dict]:
     query_lower = query.lower().strip()
     filters = {}
 
+    has_male = any(word in query_lower for word in ["male", "males", "man", "men", "boy", "boys"])
+    has_female = any(word in query_lower for word in ["female", "females", "woman", "women", "girl", "girls", "lady", "ladies"])
+    
+
     # Extract gender, age group, and country from the query
-    for gender_word, gender_value in GENDER_MAP.items():
-        if gender_word in query_lower:
-            filters["gender"] = gender_value
-            break
+    if not (has_male and has_female):
+        for gender_word, gender_value in GENDER_MAP.items():
+            if gender_word in query_lower:
+                filters["gender"] = gender_value
+                break
     
     for age_word, age_value in AGE_GROUP_MAP.items():
         if age_word in query_lower:
@@ -137,7 +132,7 @@ def validate_filter_params(
     order: Optional[str] = None,
 ) -> tuple[bool, Optional[str]]:
     
-    valid_age_groups = ["child", "teenager", "adult", "elderly"]
+    valid_age_groups = ["child", "teenager", "adult", "senior"]
     valid_sort_by = ["age", "created_at", "gender_probability"]
     valid_order = ["asc", "desc"]
     

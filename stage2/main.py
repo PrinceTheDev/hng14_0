@@ -65,6 +65,8 @@ async def get_profiles(
         min_country_probability=min_country_probability,
         sort_by=sort_by,
         order=order,
+        page=page,
+        limit=limit,
     )
 
     if not is_valid:
