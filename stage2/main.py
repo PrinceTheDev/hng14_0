@@ -73,6 +73,8 @@ async def get_profiles(
             content={"status": "error", "message": error_msg}
         )
     
+    limit = min(limit, 50)
+    
 
     profiles, total = get_all_profiles_filtered(
         gender=gender,
@@ -138,6 +140,8 @@ async def search_profiles(
             status_code=400,
             content={"status": "error", "message": "Unable to interpret query"}
         )
+    
+    limit = min(limit, 50)
     
     gender = filters.get("gender")
     age_group = filters.get("age_group")
