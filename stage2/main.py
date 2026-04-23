@@ -26,6 +26,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Intelligence Query Engine System",
     version="1.0",
+    lifespan=lifespan,
 )
 
 
@@ -43,7 +44,7 @@ app.add_middleware(
 async def get_profiles(
     gender: Optional[str] = Query(None),
     age_group: Optional[str] = Query(None),
-    country_id: Optional[int] = Query(None),
+    country_id: Optional[str] = Query(None),
     min_age: Optional[int] = Query(None, ge=0, le=150),
     max_age: Optional[int] = Query(None, ge=0, le=150),
     min_gender_probability: Optional[float] = Query(None, ge=0, le=1),
