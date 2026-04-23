@@ -75,12 +75,12 @@ def get_all_profiles_filtered(
     sort_by: str = "created_at",
     order: str = "asc",
     page: int = 1,
-    page_size: int = 10,
+    limit: int = 10,
 ) -> tuple[list[Profile], int]:
     """Get paginated and filtered profiles"""
     
     page = max(page, 1)
-    page_size = min(max(page_size, 1), 50)
+    limit = min(max(limit, 1), 50)
     
     with Session(engine) as session:
         query = select(Profile)
@@ -119,7 +119,7 @@ def get_all_profiles_filtered(
             query = query.order_by(sort_column.asc())
         
         # Apply pagination
-        offset = (page - 1) * page_size
-        profiles = session.exec(query.offset(offset).limit(page_size)).all()
+        offset = (page - 1) * limit
+        profiles = session.exec(query.offset(offset).limit(limit)).all()
         
         return profiles, total

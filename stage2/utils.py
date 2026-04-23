@@ -1,6 +1,6 @@
 import re
 import logging
-from typing import Optional, Dict, List
+from typing import Optional, Dict
 
 
 logger = logging.getLogger(__name__)
@@ -56,6 +56,17 @@ GENDER_MAP = {
 }
 
 
+def classify_age_group(age: int) -> Optional[str]:
+    if age < 13:
+        return "child"
+    elif age < 20:
+        return "teen"
+    elif age < 60:
+        return "adult"
+    else:
+        return "elderly"
+    
+
 def parse_natural_language_query(query: str) -> Optional[Dict]:
     """
     This function parses plain English query into filter paramerters for searching the database.
@@ -67,6 +78,7 @@ def parse_natural_language_query(query: str) -> Optional[Dict]:
     query_lower = query.lower().strip()
     filters = {}
 
+    # Extract gender, age group, and country from the query
     for gender_word, gender_value in GENDER_MAP.items():
         if gender_word in query_lower:
             filters["gender"] = gender_value
@@ -125,7 +137,7 @@ def validate_filter_params(
     order: Optional[str] = None,
 ) -> tuple[bool, Optional[str]]:
     
-    valid_age_groups = ["child", "teenager", "adult", "senior"]
+    valid_age_groups = ["child", "teenager", "adult", "elderly"]
     valid_sort_by = ["age", "created_at", "gender_probability"]
     valid_order = ["asc", "desc"]
     

@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import Optional
 from datetime import datetime
 
 
@@ -27,7 +26,7 @@ class ProfileListResponse(BaseModel):
 class GetAllProfilesResponse(BaseModel):
     status: str = "success"
     page: int
-    page_size: int
+    limit: int
     total: int
     data: list[ProfileListResponse]
 
@@ -35,7 +34,7 @@ class GetAllProfilesResponse(BaseModel):
 class SearchResponse(BaseModel):
     status: str = "success"
     page: int
-    page_size: int
+    limit: int
     total: int
     query: str
     filters_applied: dict

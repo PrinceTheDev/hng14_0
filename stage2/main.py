@@ -46,10 +46,10 @@ async def get_profiles(
     max_age: Optional[int] = Query(None, ge=0, le=150),
     min_gender_probability: Optional[float] = Query(None, ge=0, le=1),
     min_country_probability: Optional[float] = Query(None, ge=0, le=1),
-    sort_by: str = Query("created_at", regex="^(age|created_at|gender_probability)$"),
-    order: str = Query("asc", regex="^(asc|desc)$"),
+    sort_by: str = Query("created_at", pattern="^(age|created_at|gender_probability)$"),
+    order: str = Query("asc", pattern="^(asc|desc)$"),
     page: int = Query(1, ge=1),
-    page_size: int = Query(10, ge=1, le=50),
+    limit: int = Query(10, ge=1, le=50),
 ):
     
     is_valid, error_msg = validate_filter_params(
@@ -82,7 +82,7 @@ async def get_profiles(
         sort_by=sort_by,
         order=order,
         page=page,
-        page_size=page_size,
+        limit=limit,
     )
 
     data = [
@@ -107,7 +107,7 @@ async def get_profiles(
         content={
             "status": "success",
             "page": page,
-            "page_size": page_size,
+            "limit": limit,
             "total": total,
             "data": data
         }
@@ -119,7 +119,7 @@ async def get_profiles(
 async def search_profiles(
     q: str = Query(..., min_length=1, description="Natural language query"),
     page: int = Query(1, ge=1),
-    page_size: int = Query(10, ge=1, le=50),
+    limit: int = Query(10, ge=1, le=50),
 ):
     
     if not q or not q.strip():
@@ -152,7 +152,7 @@ async def search_profiles(
         sort_by="created_at",
         order="asc",
         page=page,
-        page_size=page_size,
+        limit=limit,
     )
 
 
@@ -178,7 +178,7 @@ async def search_profiles(
         content={
             "status": "success",
             "page": page,
-            "page_size": page_size,
+            "limit": limit,
             "total": total,
             "query": q,
             "filters_applied": filters,
