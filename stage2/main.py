@@ -51,6 +51,8 @@ async def get_profiles(
     min_country_probability: Optional[float] = Query(None, ge=0, le=1),
     sort_by: str = Query("created_at", pattern="^(age|created_at|gender_probability)$"),
     order: str = Query("asc", pattern="^(asc|desc)$"),
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=50),
 ):
     
     is_valid, error_msg = validate_filter_params(
@@ -63,8 +65,6 @@ async def get_profiles(
         min_country_probability=min_country_probability,
         sort_by=sort_by,
         order=order,
-        page=page,
-        limit=limit,
     )
 
     if not is_valid:
