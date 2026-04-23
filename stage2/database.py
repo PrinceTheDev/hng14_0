@@ -79,7 +79,7 @@ def create_profile(profile_data: dict) -> Profile:
         )
         session.add(profile)
         session.commit()
-        session.refresh(profile)
+        # session.refresh(profile)
         return profile
 
 
