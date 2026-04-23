@@ -11,19 +11,25 @@ logger = logging.getLogger(__name__)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+# if not DATABASE_URL:
+#     raise ValueError("DATABASE_URL is not set in environment variables")
+
+if not DATABASE_URL:
+    DATABASE_URL = "sqlite:////tmp/profile.db"
+    logger.info("DATABASE_URL not set, using SQLite for local development")
+else:
+    logger.info("Using PostgreSQL from DATABASE_URL")
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
 if DATABASE_URL.startswith("sqlite"):
-    logger.info("Using SQLite database at %s", DATABASE_URL)
     engine = create_engine(
         DATABASE_URL,
-        connect_args={"check_same_thread": False},
+        connect_args={"check_same_thread": False}
     )
 else:
     engine = create_engine(
         DATABASE_URL,
-        echo=False,
         pool_size=5,    
         max_overflow=10,
     )
